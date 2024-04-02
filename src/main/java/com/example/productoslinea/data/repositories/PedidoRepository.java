@@ -16,7 +16,6 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
     List<Pedido> findByFechaPedidoBetween(LocalDate fechaInicio, LocalDate fechaFin);
     List<Pedido> findByClienteAndEstado(Cliente cliente, Estado estado);
 
-    // Recuperar pedidos con sus artículos usando JOIN fetch para evitar el problema N+1, para un cliente específico
     @Query("SELECT DISTINCT p FROM Pedido p LEFT JOIN FETCH p.items WHERE p.cliente = ?1")
     List<Pedido> recuperarPedidosConArticulosPorCliente(@Param( "cliente") Long idCliente);
 }
