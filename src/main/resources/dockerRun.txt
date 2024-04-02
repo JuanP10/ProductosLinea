@@ -1,0 +1,1 @@
+docker run --name=ProductosLinea -e POSTGRES_USER=tienda -e POSTGRES_PASSWORD=123123 -e POSTGRES_DB=tienda -p 5432:5432 -d postgres
