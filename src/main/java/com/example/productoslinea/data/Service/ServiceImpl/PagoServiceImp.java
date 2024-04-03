@@ -3,6 +3,7 @@ package com.example.productoslinea.data.Service.ServiceImpl;
 import com.example.productoslinea.data.Dtos.Send.PagoDtoSend;
 import com.example.productoslinea.data.Mappers.PagoMapper;
 import com.example.productoslinea.data.Service.PagoService;
+import com.example.productoslinea.data.entities.Enums.MetodoPago;
 import com.example.productoslinea.data.entities.Pago;
 import com.example.productoslinea.data.repositories.PagoRepository;
 import org.springframework.stereotype.Service;
@@ -40,7 +41,7 @@ public class PagoServiceImp implements PagoService {
 
     @Override
     public List<PagoDtoSend> findByPedidoIdAndMetodoPago(Long pedidoId, String metodoPago) {
-        List<Pago> pagos = pagoRepository.findByPedidoIdAndMetodoPago(pedidoId, metodoPago);
+        List<Pago> pagos = pagoRepository.findByPedidoIdAndMetodoPago(pedidoId, MetodoPago.valueOf(metodoPago));
         return pagos.stream().map(pagoMapper::pagoToPagoDtoSend).toList();
     }
 
