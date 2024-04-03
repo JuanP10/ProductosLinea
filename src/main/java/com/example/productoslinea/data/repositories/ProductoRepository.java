@@ -10,6 +10,6 @@ import java.util.List;
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
     List<Producto> findByNombreContainingIgnoreCase(String terminoBusqueda);
 
-    List<Producto> findByStockGreaterThan(int cantidad);
+    List<Producto> findByStockGreaterThan();
     List<Producto> findByPriceLessThanEqualAndStockLessThanEqual(double precioMaximo, int stockMaximo);
 }
