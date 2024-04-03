@@ -16,6 +16,7 @@ public class TestProductosLineaApplication {
         return new PostgreSQLContainer<>(DockerImageName.parse("postgres:latest"));
     }
 
+
     public static void main(String[] args) {
         SpringApplication.from(ProductosLineaApplication::main).with(TestProductosLineaApplication.class).run(args);
     }

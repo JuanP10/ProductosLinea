@@ -1,5 +1,6 @@
 package com.example.productoslinea.data.Service.ServiceImpl;
 
+import com.example.productoslinea.data.Dtos.Save.ProductoDtoSave;
 import com.example.productoslinea.data.Dtos.Send.ProductoDtoSend;
 import com.example.productoslinea.data.Mappers.ProductoMapper;
 import com.example.productoslinea.data.Service.ProductoService;
@@ -7,9 +8,8 @@ import com.example.productoslinea.data.entities.Producto;
 import com.example.productoslinea.data.repositories.ProductoRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,9 +34,12 @@ public class ProductoServiceImp implements ProductoService {
     }
 
     @Override
-    public List<Producto> findAll() {
-        return null;
+    public List<ProductoDtoSend> findAll() {
+        return productoRepository.findAll().stream()
+                .map(productoMapper::productoToProductoDtoSend)
+                .collect(Collectors.toList());
     }
+
 
     @Override
     public List<ProductoDtoSend> findByStock() {
@@ -57,8 +60,10 @@ public class ProductoServiceImp implements ProductoService {
 
 
     @Override
-    public Producto guardarProducto(Producto producto) {
-        return null;
+    public ProductoDtoSend guardarProducto(ProductoDtoSave productoDtoSave) {
+        Producto producto = productoMapper.productoDtoSendToProducto(productoDtoSave);
+        Producto producto1 = productoRepository.save(producto);
+        return productoMapper.productoToProductoDtoSend(producto1);
     }
 
 
