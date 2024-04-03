@@ -6,8 +6,11 @@ import com.example.productoslinea.data.Service.ItemPedidoService;
 import com.example.productoslinea.data.entities.ItemPedido;
 import com.example.productoslinea.data.repositories.ItemPedidoRepository;
 import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+@Service
 
 public class ItemPedidoServiceImp implements ItemPedidoService {
     private final ItemPedidoRepository itemPedidoRepository;

@@ -6,8 +6,10 @@ import com.example.productoslinea.data.Service.DetalleEnvioService;
 import com.example.productoslinea.data.entities.DetalleEnvio;
 import com.example.productoslinea.data.entities.Enums.Estado;
 import com.example.productoslinea.data.repositories.DetalleEnvioRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+@Service
 
 public class DetalleEnvioServiceImp implements DetalleEnvioService {
     private final DetalleEnvioRepository detalleEnvioRepository;
