@@ -13,6 +13,8 @@ import java.util.List;
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     Cliente findByEmail(String email);
     List<Cliente> findByDireccion (String direccion);
-    List<Cliente> findByNombreStartingWith(String nombre);
+
+    //Encontrar clientes por todos los clientes que comiencen por un nombre
+    List<Cliente> findByNombreStartingWith(String nombre);  //
 
 }

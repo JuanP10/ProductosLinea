@@ -1,8 +1,6 @@
 package com.example.productoslinea.data.Service;
 
-import com.example.productoslinea.data.Dtos.Save.ProductoDtoSave;
 import com.example.productoslinea.data.Dtos.Send.ProductoDtoSend;
-import com.example.productoslinea.data.entities.Producto;
 
 import java.util.List;
 
@@ -12,10 +10,10 @@ public interface ProductoService {
     List<ProductoDtoSend> findByStock ();
     List<ProductoDtoSend> findByPriceAndStock (double price, int stock);
 
-    List<ProductoDtoSend> findAll();
-    Producto findById(Long id);
+    List<ProductoDtoSend> findAll(); //
+    ProductoDtoSend findById(Long id); //
 
-    ProductoDtoSend guardarProducto (ProductoDtoSave productoDtoSave);
+    ProductoDtoSend guardarProducto (ProductoDtoSend productoDtoSend); //
 
-    void deleteProducto(Long id);
+    void deleteProducto(Long id); //
 }

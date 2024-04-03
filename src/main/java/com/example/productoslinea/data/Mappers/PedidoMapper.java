@@ -7,6 +7,6 @@ import org.mapstruct.Mapper;
 
 @Mapper (componentModel = "spring")
 public interface PedidoMapper {
-    PedidoDtoSend pedidoToPedidoDtoSend(PedidoDtoSend pedidoDtoSend);
-    Pedido pedidoDtoSendToPedido(PedidoDtoSave pedido);
+    PedidoDtoSend pedidoToPedidoDtoSend(Pedido pedido);
+    Pedido pedidoDtoSendToPedido(PedidoDtoSend pedidoDtoSend);
 }

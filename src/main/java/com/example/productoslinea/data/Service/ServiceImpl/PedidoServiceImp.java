@@ -4,11 +4,13 @@ import com.example.productoslinea.data.Dtos.Save.PedidoDtoSave;
 import com.example.productoslinea.data.Dtos.Send.PedidoDtoSend;
 import com.example.productoslinea.data.Mappers.PedidoMapper;
 import com.example.productoslinea.data.Service.PedidoService;
+import com.example.productoslinea.data.entities.Enums.Estado;
 import com.example.productoslinea.data.entities.Pedido;
 import com.example.productoslinea.data.repositories.PedidoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,33 +23,46 @@ public class PedidoServiceImp implements PedidoService {
         this.pedidoRepository = pedidoRepository;
         this.pedidoMapper = pedidoMapper;
     }
+
     @Override
-    public List<PedidoDtoSend> findByFechaPedidoBetween(String fechaInicio, String fechaFin) {
-        return null;
+    public List<PedidoDtoSend> findByFechaPedidoBetween(LocalDate fechaInicio, LocalDate fechaFin) {
+        List<Pedido> pedidos = pedidoRepository.findByFechaPedidoBetween(fechaInicio, fechaFin);
+        return pedidos.stream().map(pedidoMapper::pedidoToPedidoDtoSend).toList();
     }
 
     @Override
-    public List<PedidoDtoSend> findByClienteAndEstado(String cliente, String estado) {
-        return null;
+    public List<PedidoDtoSend> findByClienteAndEstado(Long clienteId, String estado) {
+        List<Pedido> pedidos = pedidoRepository.findByClienteWithEstado(clienteId, Estado.valueOf(estado));
+        return pedidos.stream().map(pedidoMapper::pedidoToPedidoDtoSend).toList();
+    }
+
+    @Override
+    public List<PedidoDtoSend> recuperarPedidosConArticulosPorCliente(Long clienteId) {
+        List<Pedido> pedidos = pedidoRepository.recuperarPedidosConArticulosPorCliente(clienteId);
+        return pedidos.stream().map(pedidoMapper::pedidoToPedidoDtoSend).toList();
     }
 
     @Override
     public List<PedidoDtoSend> findAll() {
-        return null;
+        List<Pedido> pedidos = pedidoRepository.findAll();
+        return pedidos.stream().map(pedidoMapper::pedidoToPedidoDtoSend).toList();
+
     }
 
     @Override
     public PedidoDtoSend findById(Long id) {
-        return null;
+        Pedido pedido = pedidoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Pedido no encontrado" + id));
+        return pedidoMapper.pedidoToPedidoDtoSend(pedido);
     }
 
     @Override
-    public PedidoDtoSend guardarPedido(PedidoDtoSave pedidoDtoSave) {
-        return null;
+    public PedidoDtoSend guardarPedido(PedidoDtoSend pedidoDtoSend) {
+        Pedido pedido = pedidoMapper.pedidoDtoSendToPedido(pedidoDtoSend);
+        return pedidoMapper.pedidoToPedidoDtoSend(pedidoRepository.save(pedido));
     }
 
     @Override
     public void deletePedido(Long id) {
-        this.deletePedido(id);
+        pedidoRepository.deleteById(id);
     }
 }

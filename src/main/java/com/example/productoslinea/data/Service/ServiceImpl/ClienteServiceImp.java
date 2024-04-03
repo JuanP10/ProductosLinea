@@ -5,6 +5,7 @@ import com.example.productoslinea.data.Mappers.ClienteMapper;
 import com.example.productoslinea.data.Service.ClienteService;
 import com.example.productoslinea.data.entities.Cliente;
 import com.example.productoslinea.data.repositories.ClienteRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,39 +25,39 @@ public class ClienteServiceImp implements ClienteService {
 
 
     @Override
-    public Cliente findByEmail(String email) {
-        return this.clienteRepository.findByEmail(email);
+    public ClienteDtoSend findByEmail(String email) {
+        Cliente cliente = clienteRepository.findByEmail(email);
+        return clienteMapper.clienteToClienteDtoSend(cliente);
     }
 
     @Override
     public List<ClienteDtoSend> findByDireccion(String direccion) {
-        List<ClienteDtoSend> clientesDireccion = clienteRepository.findByDireccion(direccion)
-                .stream()
-                .map(clienteMapper::clienteToClienteDtoSend)
-                .toList();
-        return clientesDireccion;
+        List <Cliente> clientes = clienteRepository.findByDireccion(direccion);
+        return clientes.stream().map(clienteMapper::clienteToClienteDtoSend).collect(Collectors.toList());
     }
 
     @Override
     public List<ClienteDtoSend> findAllByNombreStarting(String nombre) {
-        return null;
+        List<Cliente> clientes = clienteRepository.findByNombreStartingWith(nombre);
+        return clientes.stream().map(clienteMapper::clienteToClienteDtoSend).collect(Collectors.toList());
     }
 
     @Override
     public List<ClienteDtoSend> findAll() {
-        return clienteRepository.findAll().stream()
-                .map(clienteMapper::clienteToClienteDtoSend)
-                .collect(Collectors.toList());
+        List<Cliente> clientes = clienteRepository.findAll();
+        return clientes.stream().map(clienteMapper::clienteToClienteDtoSend).collect(Collectors.toList());
     }
 
     @Override
     public ClienteDtoSend guardarCliente(ClienteDtoSend cliente) {
-        return null;
+        Cliente clienteEntity = clienteMapper.clienteDtoSendToCliente(cliente);
+        return clienteMapper.clienteToClienteDtoSend(clienteRepository.save(clienteEntity));
     }
 
     @Override
-    public Optional<Cliente> findById(Long id) {
-        return this.clienteRepository.findById(id);
+    public ClienteDtoSend findById(Long id) {
+        Cliente cliente = clienteRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Cliente not found with ID: " + id));
+        return clienteMapper.clienteToClienteDtoSend(cliente);
     }
 
     @Override

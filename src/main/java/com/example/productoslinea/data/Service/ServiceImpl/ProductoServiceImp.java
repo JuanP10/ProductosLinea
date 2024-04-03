@@ -23,55 +23,46 @@ public class ProductoServiceImp implements ProductoService {
         this.productoMapper = productoMapper;
     }
 
+
     @Override
     public List<ProductoDtoSend> findByName(String name) {
-        return this.findByName(name);
+        List <Producto> productos = productoRepository.findByNombreContainingIgnoreCase(name);
+        return productos.stream().map(productoMapper::productoToProductoDtoSend).collect(Collectors.toList());
     }
 
     @Override
-    public Producto findById(Long id) {
-        return this.findById(id);
+    public List<ProductoDtoSend> findByStock() {
+        List<Producto> productos = productoRepository.findByStockGreaterThan();
+        return productos.stream().map(productoMapper::productoToProductoDtoSend).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductoDtoSend> findByPriceAndStock(double price, int stock) {
+        List<Producto> productos = productoRepository.findByPriceLessThanEqualAndStockLessThanEqual(price, stock);
+        return productos.stream().map(productoMapper::productoToProductoDtoSend).collect(Collectors.toList());
     }
 
     @Override
     public List<ProductoDtoSend> findAll() {
-        return productoRepository.findAll().stream()
-                .map(productoMapper::productoToProductoDtoSend)
-                .collect(Collectors.toList());
-    }
-
-
-    @Override
-    public List<ProductoDtoSend> findByStock() {
-        List<Producto> productsStock = productoRepository.findByStockGreaterThan();
-        return productsStock.stream()
-                .map(productoMapper::productoToProductoDtoSend)
-                .collect(Collectors.toList());
+        List<Producto> productos = productoRepository.findAll();
+        return productos.stream().map(productoMapper::productoToProductoDtoSend).collect(Collectors.toList());
     }
 
     @Override
-    public List<ProductoDtoSend> findByPriceAndStock (double price, int stock) {
-        List<Producto> productsCheck = productoRepository.findByPriceLessThanEqualAndStockLessThanEqual(price, stock);
-        return productsCheck.stream()
-                .map(productoMapper::productoToProductoDtoSend)
-                .collect(Collectors.toList());
+    public ProductoDtoSend findById(Long id) {
+        Producto producto = productoRepository.findById(id).orElseThrow(()->
+                new RuntimeException("Producto no encontrado con esta ID: " + id));
+        return productoMapper.productoToProductoDtoSend(producto);
     }
-
-
 
     @Override
-    public ProductoDtoSend guardarProducto(ProductoDtoSave productoDtoSave) {
-        Producto producto = productoMapper.productoDtoSendToProducto(productoDtoSave);
-        Producto producto1 = productoRepository.save(producto);
-        return productoMapper.productoToProductoDtoSend(producto1);
+    public ProductoDtoSend guardarProducto(ProductoDtoSend productoDtoSend) {
+       Producto producto = productoMapper.productoDtoSendToProducto(productoDtoSend);
+       return productoMapper.productoToProductoDtoSend(productoRepository.save(producto));
     }
-
-
 
     @Override
     public void deleteProducto(Long id) {
-        this.deleteProducto(id);
+        productoRepository.deleteById(id);
     }
-
-
 }

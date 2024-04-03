@@ -8,6 +8,6 @@ import org.mapstruct.Mapper;
 @Mapper (componentModel = "spring")
 
 public interface ProductoMapper {
-    Producto productoDtoSendToProducto(ProductoDtoSave productoDtoSend);
+    Producto productoDtoSendToProducto(ProductoDtoSend productoDtoSend);
     ProductoDtoSend productoToProductoDtoSend(Producto producto);
 }
