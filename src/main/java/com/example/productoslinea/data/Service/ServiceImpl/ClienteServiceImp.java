@@ -9,7 +9,6 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -62,6 +61,6 @@ public class ClienteServiceImp implements ClienteService {
 
     @Override
     public void deleteCliente(Long id) {
-        this.deleteCliente(id);
+        clienteRepository.deleteById(id);
     }
 }

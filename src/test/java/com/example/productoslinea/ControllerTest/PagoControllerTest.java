@@ -29,9 +29,6 @@ public class PagoControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    @LocalServerPort
-    private int port;
-
     @Autowired
     private PagoRepository pagoRepository;
 
@@ -40,18 +37,14 @@ public class PagoControllerTest {
 
     @Test
     public void testGetAllPagos() {
-        // Prueba de integración: Realizar una solicitud GET al endpoint correspondiente
         ResponseEntity<List<PagoDtoSend>> response = restTemplate.exchange("/pagos", HttpMethod.GET, null,
                 new ParameterizedTypeReference<List<PagoDtoSend>>() {});
 
-        // Verificar el código de estado de la respuesta
         assertEquals(HttpStatus.OK, response.getStatusCode());
 
-        // Prueba unitaria: Verificar que el servicio devuelve una lista no vacía
         List<PagoDtoSend> pagos = pagoService.findAll();
         assertTrue(pagos.size() > 0);
 
-        // Prueba unitaria: Verificar que la lista de pagos contiene al menos un pago
         List<Pago> pagosFromRepository = pagoRepository.findAll();
         assertTrue(pagosFromRepository.size() > 0);
     }

@@ -1,6 +1,5 @@
 package com.example.productoslinea.data.repositories;
 
-import com.example.productoslinea.data.entities.Cliente;
 import com.example.productoslinea.data.entities.Enums.Estado;
 import com.example.productoslinea.data.entities.Pedido;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 
