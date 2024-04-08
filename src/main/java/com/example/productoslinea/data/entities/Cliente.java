@@ -1,5 +1,6 @@
 package com.example.productoslinea.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +20,7 @@ public class Cliente {
     private String email;
     private String direccion;
 
-    @OneToMany(mappedBy = "cliente")
+    @OneToMany(mappedBy = "cliente")@JsonFormat(pattern = "dd/MM/yyyy")
     List<Pedido> pedidos;
 
 }

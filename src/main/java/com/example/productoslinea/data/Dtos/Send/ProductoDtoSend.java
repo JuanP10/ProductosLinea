@@ -12,7 +12,7 @@ import java.util.List;
 public class ProductoDtoSend {
     private Long id;
     private String nombre;
-    private double precio;
+    private Double price;
     private int stock;
     @JsonIgnore
     private List<ItemPedidoDtoSend> itemPedidos;

@@ -2,6 +2,8 @@ package com.example.productoslinea.data.Contollers;
 
 import com.example.productoslinea.data.Dtos.Send.ItemPedidoDtoSend;
 import com.example.productoslinea.data.Service.ItemPedidoService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,8 +44,9 @@ public class ItemPedidoController {
     }
 
     @PostMapping
-    public ResponseEntity<?> saveOrderItem(ItemPedidoDtoSend itemPedidoDtoSend) {
-        return ResponseEntity.ok(itemPedidoService.save(itemPedidoDtoSend));
+    public ResponseEntity<?> guardarItemPedido (ItemPedidoDtoSend itemPedidoDtoSend) {
+        ItemPedidoDtoSend itemPedido = itemPedidoService.save(itemPedidoDtoSend);
+        return new ResponseEntity<>(itemPedido, HttpStatus.OK);
     }
 
     @DeleteMapping

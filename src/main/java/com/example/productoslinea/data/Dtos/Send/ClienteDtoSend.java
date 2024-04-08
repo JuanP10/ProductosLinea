@@ -1,5 +1,6 @@
 package com.example.productoslinea.data.Dtos.Send;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ public class ClienteDtoSend {
     private String nombre;
     private String email;
     private String direccion;
+    @JsonFormat(pattern = "dd/MM/yyyy")
     List<PedidoDtoSend> pedidos;
 
 }

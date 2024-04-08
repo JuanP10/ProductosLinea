@@ -24,18 +24,18 @@ public class ProductoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductoDtoSend> findById(Long id) {
+    public ResponseEntity<ProductoDtoSend> findById(@PathVariable Long id) {
         ProductoDtoSend producto = productoService.findById(id);
         return new ResponseEntity<>(producto, HttpStatus.OK);
     }
 
     @GetMapping("/search/{nombre}")
-    public ResponseEntity<List<ProductoDtoSend>> findAllByNombreStarting(String nombre) {
+    public ResponseEntity<List<ProductoDtoSend>> findAllByNombreStarting(@PathVariable String nombre) {
         List<ProductoDtoSend> producto = productoService.findByName(nombre);
         return new ResponseEntity<>(producto, HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(Long id) {
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         productoService.deleteProducto(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -45,7 +45,7 @@ public class ProductoController {
         return new ResponseEntity<>(productos, HttpStatus.OK);
     }
     @GetMapping("/price/{price}/stock/{stock}")
-    public ResponseEntity<List<ProductoDtoSend>> findByPriceAndStock(double price, int stock) {
+    public ResponseEntity<List<ProductoDtoSend>> findByPriceAndStock(@PathVariable double price, @PathVariable int stock) {
         List<ProductoDtoSend> productos = productoService.findByPriceAndStock(price, stock);
         return new ResponseEntity<>(productos, HttpStatus.OK);
     }

@@ -6,10 +6,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class ItemPedidoDtoSend {
     private Long id;
-    private int cantidad;
-    private double precioUnitario;
+    private Integer cantidad;
+    private Double precioUnitario;
+    private PedidoDtoSend pedido;
     private ProductoDtoSend producto;
 
 }
