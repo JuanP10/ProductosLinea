@@ -17,36 +17,21 @@ public class ProductoController {
         this.productoService = productoService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<ProductoDto>> findAll() {
-        List<ProductoDto> productos = productoService.findAll();
-        return new ResponseEntity<>(productos, HttpStatus.OK);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<ProductoDto> findById(@PathVariable Long id) {
         ProductoDto producto = productoService.findById(id);
         return new ResponseEntity<>(producto, HttpStatus.OK);
     }
 
-    @GetMapping("/search/{name}")
-    public ResponseEntity<List<ProductoDto>> findAllByNombreStarting(@PathVariable String name) {
-        List<ProductoDto> producto = productoService.findByName(name);
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductoDto>> findAllByNombreStarting(@RequestParam String nombre) {
+        List<ProductoDto> producto = productoService.findByName(nombre);
         return new ResponseEntity<>(producto, HttpStatus.OK);
     }
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteById(@PathVariable Long id) {
-        productoService.deleteProducto(id);
-        return ResponseEntity.ok().body("Producto eliminado");
-    }
-    @GetMapping("/stock")
+
+    @GetMapping("/instock")
     public ResponseEntity<List<ProductoDto>> findByStock() {
         List<ProductoDto> productos = productoService.findByStock();
-        return new ResponseEntity<>(productos, HttpStatus.OK);
-    }
-    @GetMapping("/price/{price}")
-    public ResponseEntity<List<ProductoDto>> findByPriceAndStock(@PathVariable Double price, @RequestParam Integer stock) {
-        List<ProductoDto> productos = productoService.findByPriceAndStock(price, stock);
         return new ResponseEntity<>(productos, HttpStatus.OK);
     }
 
@@ -60,5 +45,25 @@ public class ProductoController {
     public ResponseEntity<ProductoDto> updateProducto(@PathVariable Long id, @RequestBody ProductoDto producto) {
         ProductoDto productoActualizado = productoService.actualizarProducto(id, producto);
         return new ResponseEntity<>(productoActualizado, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteById(@PathVariable Long id) {
+        productoService.deleteProducto(id);
+        return ResponseEntity.ok().body("Producto eliminado");
+    }
+
+
+    // ----------------------------------------------------------------------------------- //
+    @GetMapping("/price/{price}")
+    public ResponseEntity<List<ProductoDto>> findByPriceAndStock(@PathVariable Double price, @RequestParam Integer stock) {
+        List<ProductoDto> productos = productoService.findByPriceAndStock(price, stock);
+        return new ResponseEntity<>(productos, HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductoDto>> findAll() {
+        List<ProductoDto> productos = productoService.findAll();
+        return new ResponseEntity<>(productos, HttpStatus.OK);
     }
 }

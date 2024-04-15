@@ -35,8 +35,8 @@ public class PedidoServiceImp implements PedidoService {
     }
 
     @Override
-    public List<PedidoDto> recuperarPedidosConArticulosPorCliente(Long cliente) {
-        List<Pedido> pedidos = pedidoRepository.recuperarPedidosConArticulosPorCliente(cliente);
+    public List<PedidoDto> recuperarPedidosConArticulosPorCliente(Long customerId) {
+        List<Pedido> pedidos = pedidoRepository.recuperarPedidosConArticulosPorCliente(customerId);
         return pedidos.stream().map(pedidoMapper::pedidoToPedidoDto).toList();
     }
 

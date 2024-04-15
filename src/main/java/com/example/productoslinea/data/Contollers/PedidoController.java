@@ -18,11 +18,6 @@ public class PedidoController {
         this.pedidoService = pedidoService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<PedidoDto>> findAll() {
-        List<PedidoDto> pedidos = pedidoService.findAll();
-        return new ResponseEntity<>(pedidos, HttpStatus.OK);
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<PedidoDto> findById(@PathVariable Long id) {
@@ -30,23 +25,21 @@ public class PedidoController {
         return new ResponseEntity<>(pedido, HttpStatus.OK);
     }
 
-    @GetMapping("/clientStatus/{id}")
-    public ResponseEntity<List<PedidoDto>> findByClienteAndEstado(@PathVariable Long id, @RequestParam String estado) {
-        List<PedidoDto> pedidos = pedidoService.findByClienteAndEstado(id, estado);
-        return new ResponseEntity<>(pedidos, HttpStatus.OK);
-
-    }
-
-    @GetMapping("/client/{id}")
-    public ResponseEntity<?> recuperarPedidosConArticulosPorCliente(@PathVariable Long id) {
-        List<PedidoDto> pedidos = pedidoService.recuperarPedidosConArticulosPorCliente(id);
+    @GetMapping
+    public ResponseEntity<List<PedidoDto>> findAll() {
+        List<PedidoDto> pedidos = pedidoService.findAll();
         return new ResponseEntity<>(pedidos, HttpStatus.OK);
     }
 
+    @GetMapping("/customer/{customerId}")
+    public ResponseEntity<?> recuperarPedidosConArticulosPorCliente(@PathVariable Long customerId) {
+        List<PedidoDto> pedidos = pedidoService.recuperarPedidosConArticulosPorCliente(customerId);
+        return new ResponseEntity<>(pedidos, HttpStatus.OK);
+    }
 
-    @GetMapping("/date")
-    public ResponseEntity<List<PedidoDto>> findByFechaPedidoBetween(@RequestParam LocalDate fechaInicio, @RequestParam LocalDate fechaFin) {
-        List<PedidoDto> pedidos = pedidoService.findByFechaPedidoBetween(fechaInicio, fechaFin);
+    @GetMapping("/date-range")
+    public ResponseEntity<List<PedidoDto>> findByFechaPedidoBetween(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
+        List<PedidoDto> pedidos = pedidoService.findByFechaPedidoBetween(startDate, endDate);
         return new ResponseEntity<>(pedidos, HttpStatus.OK);
 
     }
@@ -67,6 +60,14 @@ public class PedidoController {
     public ResponseEntity<String> deletePedido(@PathVariable Long id) {
         pedidoService.deletePedido(id);
         return  ResponseEntity.ok().body("Pedido eliminado correctamente");
+    }
+
+    //---------------------------------------------------------------------//
+    @GetMapping("/clientStatus/{id}")
+    public ResponseEntity<List<PedidoDto>> findByClienteAndEstado(@PathVariable Long id, @RequestParam String estado) {
+        List<PedidoDto> pedidos = pedidoService.findByClienteAndEstado(id, estado);
+        return new ResponseEntity<>(pedidos, HttpStatus.OK);
+
     }
 
 

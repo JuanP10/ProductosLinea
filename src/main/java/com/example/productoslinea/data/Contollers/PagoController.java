@@ -17,24 +17,25 @@ public class PagoController {
         this.pagoService = pagoService;
     }
 
-   @GetMapping
-    public ResponseEntity<?> getAllPayments() {
-        return ResponseEntity.ok(pagoService.findAll());
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getPaymentById(@PathVariable Long id) {
         return ResponseEntity.ok(pagoService.findById(id));
     }
 
-    @GetMapping("/order/{id}")
-    public ResponseEntity<?> getPaymentsByPedidoIdAndMetodoPago(@PathVariable Long id, @RequestParam String metodoPago) {
-        return ResponseEntity.ok(pagoService.findByPedidoIdAndMetodoPago(id, metodoPago));
+    @GetMapping
+    public ResponseEntity<?> getAllPayments() {
+        return ResponseEntity.ok(pagoService.findAll());
     }
 
-    @GetMapping("/date")
-    public ResponseEntity<?> getPaymentsByDate(@RequestParam LocalDate fechaInicio, @RequestParam LocalDate fechaFin) {
-        return ResponseEntity.ok(pagoService.findByFechaPagoBetween(fechaInicio, fechaFin));
+    @GetMapping("/order/{orderId}")
+    public ResponseEntity<?> getPaymentsByPedidoIdAndMetodoPago(@PathVariable Long orderId, @RequestParam String metodoPago) {
+        return ResponseEntity.ok(pagoService.findByPedidoIdAndMetodoPago(orderId, metodoPago));
+    }
+
+    @GetMapping("/date-range")
+    public ResponseEntity<?> getPaymentsByDate(@RequestParam LocalDate startDate, @RequestParam LocalDate endDate) {
+        return ResponseEntity.ok(pagoService.findByFechaPagoBetween(startDate, endDate));
     }
 
     @PostMapping

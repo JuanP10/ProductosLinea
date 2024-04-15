@@ -11,7 +11,7 @@ public interface PedidoService {
 
     List<PedidoDto> findByClienteAndEstado (Long clienteId, String estado); //
 
-    List<PedidoDto> recuperarPedidosConArticulosPorCliente (Long cliente); //
+    List<PedidoDto> recuperarPedidosConArticulosPorCliente (Long customerId); //
     List<PedidoDto> findAll(); //
     PedidoDto findById(Long id); //
     PedidoDto guardarPedido (PedidoDto pedidoDto); //

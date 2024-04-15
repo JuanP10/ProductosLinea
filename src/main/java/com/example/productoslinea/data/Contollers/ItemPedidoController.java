@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api/v1/orderItems")
+@RequestMapping("/api/v1/order-items")
 public class ItemPedidoController {
 
     private final ItemPedidoService itemPedidoService;
@@ -17,34 +17,25 @@ public class ItemPedidoController {
         this.itemPedidoService = itemPedidoService;
     }
 
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getOrderItemById(@PathVariable Long id) {
+        return ResponseEntity.ok(itemPedidoService.findById(id));
+    }
+
     @GetMapping
     public ResponseEntity<?> getAllOrderItems() {
         return ResponseEntity.ok(itemPedidoService.findAll());
     }
 
-    @GetMapping("/order/{id}")
-    public ResponseEntity<?> getOrderItemsByOrderId(@PathVariable Long id) {
-        return ResponseEntity.ok(itemPedidoService.findByPedidoId(id));
+    @GetMapping("/order/{orderId}")
+    public ResponseEntity<?> getOrderItemsByOrderId(@PathVariable Long orderId) {
+        return ResponseEntity.ok(itemPedidoService.findByPedidoId(orderId));
     }
 
-    @GetMapping("/product/{id}")
-    public ResponseEntity<?> getOrderItemsByProductId(@PathVariable Long id) {
-        return ResponseEntity.ok(itemPedidoService.findByProductoId(id));
-    }
-
-    @GetMapping("/product/sales/{id}")
-    public ResponseEntity<?> getTotalSalesByProductId(@PathVariable Long id) {
-        return ResponseEntity.ok(itemPedidoService.calcularTotalVentasPorProducto(id));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateOrderItem(@PathVariable Long id, @RequestBody ItemPedidoDto itemPedidoDto) {
-        return ResponseEntity.ok(itemPedidoService.guardarItemPedido(id, itemPedidoDto));
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getOrderItemById(@PathVariable Long id) {
-        return ResponseEntity.ok(itemPedidoService.findById(id));
+    @GetMapping("/product/{productId}")
+    public ResponseEntity<?> getOrderItemsByProductId(@PathVariable Long productId) {
+        return ResponseEntity.ok(itemPedidoService.findByProductoId(productId));
     }
 
     @PostMapping
@@ -53,12 +44,22 @@ public class ItemPedidoController {
         return new ResponseEntity<>(itemPedido, HttpStatus.OK);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateOrderItem(@PathVariable Long id, @RequestBody ItemPedidoDto itemPedidoDto) {
+        return ResponseEntity.ok(itemPedidoService.guardarItemPedido(id, itemPedidoDto));
+    }
 
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteOrderItem(@PathVariable Long id) {
         itemPedidoService.delete(id);
         return ResponseEntity.ok().body("ItemPedido eliminado");
+    }
+
+    //---------------------------------------------------------//
+    @GetMapping("/product/sales/{id}")
+    public ResponseEntity<?> getTotalSalesByProductId(@PathVariable Long id) {
+        return ResponseEntity.ok(itemPedidoService.calcularTotalVentasPorProducto(id));
     }
 
 

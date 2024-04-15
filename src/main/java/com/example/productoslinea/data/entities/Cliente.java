@@ -1,7 +1,5 @@
 package com.example.productoslinea.data.entities;
 
-import com.example.productoslinea.data.Mappers.ClienteMapper;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
