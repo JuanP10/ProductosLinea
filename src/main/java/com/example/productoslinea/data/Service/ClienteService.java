@@ -1,17 +1,19 @@
 package com.example.productoslinea.data.Service;
 
-import com.example.productoslinea.data.Dtos.Send.ClienteDtoSend;
+import com.example.productoslinea.data.Dtos.ClienteDto;
 
 import java.util.List;
 
 public interface ClienteService {
-    ClienteDtoSend findByEmail(String email); //
-    List<ClienteDtoSend> findByDireccion(String direccion); //
+    ClienteDto findByEmail(String email); //
+    List<ClienteDto> findByDireccion(String direccion); //
 
-    List<ClienteDtoSend> findAllByNombreStarting(String nombre); //
-    List<ClienteDtoSend> findAll(); //
+    List<ClienteDto> findAllByNombreStarting(String nombre); //
+    List<ClienteDto> findAll(); //
 
-    ClienteDtoSend guardarCliente(ClienteDtoSend cliente); //
-    ClienteDtoSend findById(Long id); //
+    ClienteDto actualizarCliente(Long id, ClienteDto cliente); //
+
+    ClienteDto guardarCliente(ClienteDto cliente); //
+    ClienteDto findById(Long id); //
     void deleteCliente(Long id); //
 }

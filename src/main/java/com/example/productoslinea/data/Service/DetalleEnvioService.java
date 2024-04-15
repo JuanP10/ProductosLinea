@@ -1,20 +1,22 @@
 package com.example.productoslinea.data.Service;
 
-import com.example.productoslinea.data.Dtos.Send.DetalleEnvioDtoSend;
+import com.example.productoslinea.data.Dtos.DetalleEnvioDto;
 
 import java.util.List;
 
 public interface DetalleEnvioService {
-    List<DetalleEnvioDtoSend> findAll();
-    DetalleEnvioDtoSend findById(Long id);
+    List<DetalleEnvioDto> findAll();
+    DetalleEnvioDto findById(Long id);
 
-    List<DetalleEnvioDtoSend> findByPedidoId(Long pedidoId);
+    List<DetalleEnvioDto> findByPedidoId(Long pedidoId);
 
-    List<DetalleEnvioDtoSend> findByTransportadora (String transportadora);
+    List<DetalleEnvioDto> findByTransportadora (String transportadora);
 
-    List<DetalleEnvioDtoSend> findByPedidoEstado(String estado);
+    List<DetalleEnvioDto> findByPedidoEstado(String estado);
 
-    DetalleEnvioDtoSend save(DetalleEnvioDtoSend detalleEnvioDtoSend);
+    DetalleEnvioDto save(DetalleEnvioDto detalleEnvioDto);
+
+    DetalleEnvioDto actualizarUpdate (Long id, DetalleEnvioDto detalleEnvioDto);
     void delete(Long id);
 
 }

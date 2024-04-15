@@ -1,6 +1,6 @@
 package com.example.productoslinea.data.Service.ServiceImpl;
 
-import com.example.productoslinea.data.Dtos.Send.ClienteDtoSend;
+import com.example.productoslinea.data.Dtos.ClienteDto;
 import com.example.productoslinea.data.Mappers.ClienteMapper;
 import com.example.productoslinea.data.Service.ClienteService;
 import com.example.productoslinea.data.entities.Cliente;
@@ -24,43 +24,58 @@ public class ClienteServiceImp implements ClienteService {
 
 
     @Override
-    public ClienteDtoSend findByEmail(String email) {
+    public ClienteDto findByEmail(String email) {
         Cliente cliente = clienteRepository.findByEmail(email);
-        return clienteMapper.clienteToClienteDtoSend(cliente);
+        return clienteMapper.clienteToClienteDto(cliente);
     }
 
     @Override
-    public List<ClienteDtoSend> findByDireccion(String direccion) {
+    public List<ClienteDto> findByDireccion(String direccion) {
         List <Cliente> clientes = clienteRepository.findByDireccion(direccion);
-        return clientes.stream().map(clienteMapper::clienteToClienteDtoSend).collect(Collectors.toList());
+        return clientes.stream().map(clienteMapper::clienteToClienteDto).toList();
     }
 
     @Override
-    public List<ClienteDtoSend> findAllByNombreStarting(String nombre) {
+    public List<ClienteDto> findAllByNombreStarting(String nombre) {
         List<Cliente> clientes = clienteRepository.findByNombreStartingWith(nombre);
-        return clientes.stream().map(clienteMapper::clienteToClienteDtoSend).collect(Collectors.toList());
+        return clientes.stream().map(clienteMapper::clienteToClienteDto).toList();
     }
 
     @Override
-    public List<ClienteDtoSend> findAll() {
+    public List<ClienteDto> findAll() {
         List<Cliente> clientes = clienteRepository.findAll();
-        return clientes.stream().map(clienteMapper::clienteToClienteDtoSend).collect(Collectors.toList());
+        return clientes.stream().map(clienteMapper::clienteToClienteDto).toList();
     }
 
     @Override
-    public ClienteDtoSend guardarCliente(ClienteDtoSend cliente) {
-        Cliente clienteEntity = clienteMapper.clienteDtoSendToCliente(cliente);
-        return clienteMapper.clienteToClienteDtoSend(clienteRepository.save(clienteEntity));
+    public ClienteDto actualizarCliente(Long id, ClienteDto cliente) {
+        Cliente clienteEntity = clienteMapper.clienteDtoToCliente(cliente);
+        Cliente clienteActualizado = clienteRepository.findById(id).map(clienteEncontrado -> {
+            clienteEncontrado.setNombre(clienteEntity.getNombre());
+            clienteEncontrado.setEmail(clienteEntity.getEmail());
+            clienteEncontrado.setDireccion(clienteEntity.getDireccion());
+            return clienteRepository.save(clienteEncontrado);
+        }).orElseThrow(() -> new EntityNotFoundException("Cliente no encontrado con id: " + id));
+
+        return clienteMapper.clienteToClienteDto(clienteActualizado);
     }
 
     @Override
-    public ClienteDtoSend findById(Long id) {
-        Cliente cliente = clienteRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Cliente not found with ID: " + id));
-        return clienteMapper.clienteToClienteDtoSend(cliente);
+    public ClienteDto guardarCliente(ClienteDto cliente) {
+        Cliente clienteEntity = clienteMapper.clienteDtoToCliente(cliente);
+        return clienteMapper.clienteToClienteDto(clienteRepository.save(clienteEntity));
+    }
+
+    @Override
+    public ClienteDto findById(Long id) {
+        Cliente cliente = clienteRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Cliente no encontrado con id: " + id));
+        return clienteMapper.clienteToClienteDto(cliente);
     }
 
     @Override
     public void deleteCliente(Long id) {
+        Cliente cliente = clienteRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Cliente no encontrado con id: " + id));
+
         clienteRepository.deleteById(id);
     }
 }

@@ -1,6 +1,6 @@
 package com.example.productoslinea.data.Service.ServiceImpl;
 
-import com.example.productoslinea.data.Dtos.Send.ProductoDtoSend;
+import com.example.productoslinea.data.Dtos.ProductoDto;
 import com.example.productoslinea.data.Mappers.ProductoMapper;
 import com.example.productoslinea.data.Service.ProductoService;
 import com.example.productoslinea.data.entities.Producto;
@@ -24,44 +24,58 @@ public class ProductoServiceImp implements ProductoService {
 
 
     @Override
-    public List<ProductoDtoSend> findByName(String name) {
+    public List<ProductoDto> findByName(String name) {
         List <Producto> productos = productoRepository.findByNombreContainingIgnoreCase(name);
-        return productos.stream().map(productoMapper::productoToProductoDtoSend).collect(Collectors.toList());
+        return productos.stream().map(productoMapper::productoToProductoDto).toList();
     }
 
     @Override
-    public List<ProductoDtoSend> findByStock() {
+    public List<ProductoDto> findByStock() {
         List<Producto> productos = productoRepository.findByStockGreaterThan();
-        return productos.stream().map(productoMapper::productoToProductoDtoSend).collect(Collectors.toList());
+        return productos.stream().map(productoMapper::productoToProductoDto).toList();
     }
 
     @Override
-    public List<ProductoDtoSend> findByPriceAndStock(double price, int stock) {
-        List<Producto> productos = productoRepository.findByPriceLessThanEqualAndStockLessThanEqual(price, stock);
-        return productos.stream().map(productoMapper::productoToProductoDtoSend).collect(Collectors.toList());
+    public List<ProductoDto> findByPriceAndStock(Double precio, Integer stock) {
+        List<Producto> productos = productoRepository.findByPrecioLessThanEqualAndStockLessThanEqual(precio, stock);
+        return productos.stream().map(productoMapper::productoToProductoDto).toList();
     }
 
     @Override
-    public List<ProductoDtoSend> findAll() {
+    public List<ProductoDto> findAll() {
         List<Producto> productos = productoRepository.findAll();
-        return productos.stream().map(productoMapper::productoToProductoDtoSend).collect(Collectors.toList());
+        return productos.stream().map(productoMapper::productoToProductoDto).toList();
     }
 
     @Override
-    public ProductoDtoSend findById(Long id) {
+    public ProductoDto findById(Long id) {
         Producto producto = productoRepository.findById(id).orElseThrow(()->
                 new RuntimeException("Producto no encontrado con esta ID: " + id));
-        return productoMapper.productoToProductoDtoSend(producto);
+        return productoMapper.productoToProductoDto(producto);
     }
 
     @Override
-    public ProductoDtoSend guardarProducto(ProductoDtoSend productoDtoSend) {
-       Producto producto = productoMapper.productoDtoSendToProducto(productoDtoSend);
-       return productoMapper.productoToProductoDtoSend(productoRepository.save(producto));
+    public ProductoDto guardarProducto(ProductoDto productoDto) {
+       Producto producto = productoMapper.productoDtoToProducto(productoDto);
+       return productoMapper.productoToProductoDto(productoRepository.save(producto));
+    }
+
+    @Override
+    public ProductoDto actualizarProducto(Long id, ProductoDto productoDto) {
+        Producto producto = productoMapper.productoDtoToProducto(productoDto);
+        Producto productoActualizado = productoRepository.findById(id).map(producto1 -> {
+            producto1.setNombre(producto.getNombre());
+            producto1.setPrecio(producto.getPrecio());
+            producto1.setStock(producto.getStock());
+            return productoRepository.save(producto1);
+        }).orElseThrow(() -> new RuntimeException("Producto no encontrado con esta ID: " + id));
+
+        return productoMapper.productoToProductoDto(productoActualizado);
     }
 
     @Override
     public void deleteProducto(Long id) {
+        productoRepository.findById(id).orElseThrow(() -> new RuntimeException("Producto no encontrado con esta ID: " + id));
         productoRepository.deleteById(id);
     }
 }

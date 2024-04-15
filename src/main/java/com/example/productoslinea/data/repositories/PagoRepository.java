@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface PagoRepository extends JpaRepository<Pago, Long> {
     List<Pago> findByFechaPagoBetween(LocalDate fechaInicio, LocalDate fechaFin);
-    List<Pago> findByPedidoIdAndMetodoPago(Long pedidoId, MetodoPago metodoPago);
+    List<Pago> findByPedidoIdAndMetodoPago(Long pedidoId, String metodoPago);
 }

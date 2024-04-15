@@ -1,6 +1,6 @@
 package com.example.productoslinea.ControllerTest;
 
-import com.example.productoslinea.data.Dtos.Send.PagoDtoSend;
+import com.example.productoslinea.data.Dtos.PagoDto;
 import com.example.productoslinea.data.Service.PagoService;
 import com.example.productoslinea.data.entities.Enums.MetodoPago;
 import com.example.productoslinea.data.entities.Pago;
@@ -36,12 +36,12 @@ public class PagoControllerTest {
 
     @Test
     public void testGetAllPagos() {
-        ResponseEntity<List<PagoDtoSend>> response = restTemplate.exchange("/pagos", HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<PagoDtoSend>>() {});
+        ResponseEntity<List<PagoDto>> response = restTemplate.exchange("/pagos", HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<PagoDto>>() {});
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
 
-        List<PagoDtoSend> pagos = pagoService.findAll();
+        List<PagoDto> pagos = pagoService.findAll();
         assertTrue(pagos.size() > 0);
 
         List<Pago> pagosFromRepository = pagoRepository.findAll();
@@ -55,11 +55,11 @@ public class PagoControllerTest {
         pago.setTotalPago(1000000.0);
         pagoRepository.save(pago);
 
-        ResponseEntity<PagoDtoSend> response = restTemplate.getForEntity("/pagos/{id}", PagoDtoSend.class, pago.getId());
+        ResponseEntity<PagoDto> response = restTemplate.getForEntity("/pagos/{id}", PagoDto.class, pago.getId());
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
 
-        PagoDtoSend pagoDto = pagoService.findById(pago.getId());
+        PagoDto pagoDto = pagoService.findById(pago.getId());
         assertEquals(pago.getMetodoPago(), pagoDto.getMetodo());
         assertEquals(pago.getTotalPago(), pagoDto.getMonto(), 0.0);
     }

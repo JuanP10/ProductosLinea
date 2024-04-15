@@ -1,6 +1,6 @@
 package com.example.productoslinea.data.Contollers;
 
-import com.example.productoslinea.data.Dtos.Send.PagoDtoSend;
+import com.example.productoslinea.data.Dtos.PagoDto;
 import com.example.productoslinea.data.Service.PagoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,29 +23,34 @@ public class PagoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getPaymentById(Long id) {
+    public ResponseEntity<?> getPaymentById(@PathVariable Long id) {
         return ResponseEntity.ok(pagoService.findById(id));
     }
 
-    @GetMapping("/pedido/{pedidoId}/metodo/{metodoPago}")
-    public ResponseEntity<?> getPaymentsByPedidoIdAndMetodoPago(Long pedidoId, String metodoPago) {
-        return ResponseEntity.ok(pagoService.findByPedidoIdAndMetodoPago(pedidoId, metodoPago));
+    @GetMapping("/order/{id}")
+    public ResponseEntity<?> getPaymentsByPedidoIdAndMetodoPago(@PathVariable Long id, @RequestParam String metodoPago) {
+        return ResponseEntity.ok(pagoService.findByPedidoIdAndMetodoPago(id, metodoPago));
     }
 
     @GetMapping("/date")
-    public ResponseEntity<?> getPaymentsByDate(LocalDate fechaInicio, LocalDate fechaFin) {
+    public ResponseEntity<?> getPaymentsByDate(@RequestParam LocalDate fechaInicio, @RequestParam LocalDate fechaFin) {
         return ResponseEntity.ok(pagoService.findByFechaPagoBetween(fechaInicio, fechaFin));
     }
 
     @PostMapping
-    public ResponseEntity<?> guardarCliente(@RequestBody PagoDtoSend pagoDtoSend) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(pagoService.save(pagoDtoSend));
+    public ResponseEntity<?> guardarCliente(@RequestBody PagoDto pagoDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(pagoService.guardar(pagoDto));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updatePayment(@PathVariable Long id, @RequestBody PagoDto pagoDto) {
+        return ResponseEntity.ok(pagoService.actualizar(id, pagoDto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteById(Long id) {
+    public ResponseEntity<?> deleteById(@PathVariable Long id) {
         pagoService.delete(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body("Pago eliminado");
     }
 
 

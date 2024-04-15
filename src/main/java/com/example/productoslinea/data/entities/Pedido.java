@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,23 +18,27 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class Pedido {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Estado estado;
+
+    @Column(name = "fecha_pedido", nullable = false)
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate fechaPedido;
 
-    @ManyToOne @JsonIgnore
-    @JoinColumn(name = "id_cliente")
+    @ManyToOne @JoinColumn(name = "cliente")
     private Cliente cliente;
 
     @OneToMany (mappedBy = "pedido")
     private List<ItemPedido> items;
 
-    @OneToOne @JoinColumn(name = "id_pago")
+    @OneToOne (mappedBy = "pedido")
     private Pago pago;
 
-    @OneToOne @JoinColumn(name = "id_envio")
+    @OneToOne (mappedBy = "pedido")
     private DetalleEnvio envio;
 
 }

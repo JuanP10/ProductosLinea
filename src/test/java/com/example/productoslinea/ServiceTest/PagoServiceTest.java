@@ -1,6 +1,6 @@
 package com.example.productoslinea.ServiceTest;
 
-import com.example.productoslinea.data.Dtos.Send.PagoDtoSend;
+import com.example.productoslinea.data.Dtos.PagoDto;
 import com.example.productoslinea.data.Mappers.PagoMapper;
 import com.example.productoslinea.data.Service.ServiceImpl.PagoServiceImp;
 import com.example.productoslinea.data.entities.Enums.MetodoPago;
@@ -52,12 +52,12 @@ public class PagoServiceTest {
         given(pagoRepository.findById(idPago))
                 .willReturn(Optional.of(pago));
 
-        PagoDtoSend pagoDto = new PagoDtoSend();
+        PagoDto pagoDto = new PagoDto();
 
-        given(pagoMapper.pagoToPagoDtoSend(any(Pago.class)))
+        given(pagoMapper.pagoToPagoDto(any(Pago.class)))
                 .willReturn(pagoDto);
 
-        PagoDtoSend result = pagoService.findById(idPago);
+        PagoDto result = pagoService.findById(idPago);
 
         assertNotNull(result);
     }

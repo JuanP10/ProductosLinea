@@ -1,4 +1,4 @@
-package com.example.productoslinea.data.Dtos.Send;
+package com.example.productoslinea.data.Dtos;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,11 +9,9 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductoDtoSend {
+public class ProductoDto {
     private Long id;
     private String nombre;
-    private Double price;
-    private int stock;
-    @JsonIgnore
-    private List<ItemPedidoDtoSend> itemPedidos;
+    private Double precio;
+    private Integer stock;
 }

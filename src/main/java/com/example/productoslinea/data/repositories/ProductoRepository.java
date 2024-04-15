@@ -12,5 +12,5 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     List<Producto> findByNombreContainingIgnoreCase(String terminoBusqueda);
     @Query("SELECT p FROM Producto p WHERE p.stock> 0")
     List<Producto> findByStockGreaterThan();
-    List<Producto> findByPriceLessThanEqualAndStockLessThanEqual(double precioMaximo, int stockMaximo);
+    List<Producto> findByPrecioLessThanEqualAndStockLessThanEqual(Double precioMaximo, Integer stockMaximo);
 }

@@ -1,6 +1,6 @@
 package com.example.productoslinea.data.Contollers;
 
-import com.example.productoslinea.data.Dtos.Send.ProductoDtoSend;
+import com.example.productoslinea.data.Dtos.ProductoDto;
 import com.example.productoslinea.data.Service.ProductoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,41 +18,47 @@ public class ProductoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductoDtoSend>> findAll() {
-        List<ProductoDtoSend> productos = productoService.findAll();
+    public ResponseEntity<List<ProductoDto>> findAll() {
+        List<ProductoDto> productos = productoService.findAll();
         return new ResponseEntity<>(productos, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductoDtoSend> findById(@PathVariable Long id) {
-        ProductoDtoSend producto = productoService.findById(id);
+    public ResponseEntity<ProductoDto> findById(@PathVariable Long id) {
+        ProductoDto producto = productoService.findById(id);
         return new ResponseEntity<>(producto, HttpStatus.OK);
     }
 
-    @GetMapping("/search/{nombre}")
-    public ResponseEntity<List<ProductoDtoSend>> findAllByNombreStarting(@PathVariable String nombre) {
-        List<ProductoDtoSend> producto = productoService.findByName(nombre);
+    @GetMapping("/search/{name}")
+    public ResponseEntity<List<ProductoDto>> findAllByNombreStarting(@PathVariable String name) {
+        List<ProductoDto> producto = productoService.findByName(name);
         return new ResponseEntity<>(producto, HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+    public ResponseEntity<String> deleteById(@PathVariable Long id) {
         productoService.deleteProducto(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.ok().body("Producto eliminado");
     }
     @GetMapping("/stock")
-    public ResponseEntity<List<ProductoDtoSend>> findByStock() {
-        List<ProductoDtoSend> productos = productoService.findByStock();
+    public ResponseEntity<List<ProductoDto>> findByStock() {
+        List<ProductoDto> productos = productoService.findByStock();
         return new ResponseEntity<>(productos, HttpStatus.OK);
     }
-    @GetMapping("/price/{price}/stock/{stock}")
-    public ResponseEntity<List<ProductoDtoSend>> findByPriceAndStock(@PathVariable double price, @PathVariable int stock) {
-        List<ProductoDtoSend> productos = productoService.findByPriceAndStock(price, stock);
+    @GetMapping("/price/{price}")
+    public ResponseEntity<List<ProductoDto>> findByPriceAndStock(@PathVariable Double price, @RequestParam Integer stock) {
+        List<ProductoDto> productos = productoService.findByPriceAndStock(price, stock);
         return new ResponseEntity<>(productos, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<ProductoDtoSend> guardarProducto(@RequestBody ProductoDtoSend producto) {
-        ProductoDtoSend productoGuardado = productoService.guardarProducto(producto);
+    public ResponseEntity<ProductoDto> guardarProducto(@RequestBody ProductoDto producto) {
+        ProductoDto productoGuardado = productoService.guardarProducto(producto);
         return new ResponseEntity<>(productoGuardado, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductoDto> updateProducto(@PathVariable Long id, @RequestBody ProductoDto producto) {
+        ProductoDto productoActualizado = productoService.actualizarProducto(id, producto);
+        return new ResponseEntity<>(productoActualizado, HttpStatus.OK);
     }
 }

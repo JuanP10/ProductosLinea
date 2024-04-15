@@ -1,6 +1,6 @@
 package com.example.productoslinea.data.Contollers;
 
-import com.example.productoslinea.data.Dtos.Send.PedidoDtoSend;
+import com.example.productoslinea.data.Dtos.PedidoDto;
 import com.example.productoslinea.data.Service.PedidoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/pedidos")
+@RequestMapping("/api/v1/orders")
 public class PedidoController {
     private final PedidoService pedidoService;
 
@@ -19,48 +19,54 @@ public class PedidoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PedidoDtoSend>> findAll() {
-        List<PedidoDtoSend> pedidos = pedidoService.findAll();
+    public ResponseEntity<List<PedidoDto>> findAll() {
+        List<PedidoDto> pedidos = pedidoService.findAll();
         return new ResponseEntity<>(pedidos, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PedidoDtoSend> findById(Long id) {
-        PedidoDtoSend pedido = pedidoService.findById(id);
+    public ResponseEntity<PedidoDto> findById(@PathVariable Long id) {
+        PedidoDto pedido = pedidoService.findById(id);
         return new ResponseEntity<>(pedido, HttpStatus.OK);
     }
 
-    @GetMapping("/cliente/{id}/estado/{estado}")
-    public ResponseEntity<List<PedidoDtoSend>> findByClienteAndEstado(Long clienteId, String estado) {
-        List<PedidoDtoSend> pedidos = pedidoService.findByClienteAndEstado(clienteId, estado);
+    @GetMapping("/clientStatus/{id}")
+    public ResponseEntity<List<PedidoDto>> findByClienteAndEstado(@PathVariable Long id, @RequestParam String estado) {
+        List<PedidoDto> pedidos = pedidoService.findByClienteAndEstado(id, estado);
         return new ResponseEntity<>(pedidos, HttpStatus.OK);
 
     }
 
-    @GetMapping("/cliente/{id}")
-    public ResponseEntity<List<PedidoDtoSend>> recuperarPedidosConArticulosPorCliente(Long clienteId) {
-        List<PedidoDtoSend> pedidos = pedidoService.recuperarPedidosConArticulosPorCliente(clienteId);
+    @GetMapping("/client/{id}")
+    public ResponseEntity<?> recuperarPedidosConArticulosPorCliente(@PathVariable Long id) {
+        List<PedidoDto> pedidos = pedidoService.recuperarPedidosConArticulosPorCliente(id);
         return new ResponseEntity<>(pedidos, HttpStatus.OK);
-
     }
 
-    @GetMapping("/fecha/{fechaInicio}/{fechaFin}")
-    public ResponseEntity<List<PedidoDtoSend>> findByFechaPedidoBetween(LocalDate fechaInicio, LocalDate fechaFin) {
-        List<PedidoDtoSend> pedidos = pedidoService.findByFechaPedidoBetween(fechaInicio, fechaFin);
+
+    @GetMapping("/date")
+    public ResponseEntity<List<PedidoDto>> findByFechaPedidoBetween(@RequestParam LocalDate fechaInicio, @RequestParam LocalDate fechaFin) {
+        List<PedidoDto> pedidos = pedidoService.findByFechaPedidoBetween(fechaInicio, fechaFin);
         return new ResponseEntity<>(pedidos, HttpStatus.OK);
 
     }
 
     @PostMapping
-    public ResponseEntity<PedidoDtoSend> guardarPedido(PedidoDtoSend pedido) {
-        PedidoDtoSend pedidoGuardado = pedidoService.guardarPedido(pedido);
+    public ResponseEntity<PedidoDto> guardarPedido(@RequestBody PedidoDto pedido) {
+        PedidoDto pedidoGuardado = pedidoService.guardarPedido(pedido);
         return new ResponseEntity<>(pedidoGuardado, HttpStatus.CREATED);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> deletePedido(Long id) {
+    @PutMapping("/{id}")
+    public ResponseEntity<PedidoDto> updatePedido(@PathVariable Long id, @RequestBody PedidoDto pedido) {
+        PedidoDto pedidoActualizado = pedidoService.actualizarPedido(id, pedido);
+        return new ResponseEntity<>(pedidoActualizado, HttpStatus.OK);
+    }
+
+    @DeleteMapping ("/{id}")
+    public ResponseEntity<String> deletePedido(@PathVariable Long id) {
         pedidoService.deletePedido(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return  ResponseEntity.ok().body("Pedido eliminado correctamente");
     }
 
 

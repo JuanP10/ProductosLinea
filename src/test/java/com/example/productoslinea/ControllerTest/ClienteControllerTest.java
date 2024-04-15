@@ -1,6 +1,6 @@
 package com.example.productoslinea.ControllerTest;
 
-import com.example.productoslinea.data.Dtos.Send.ClienteDtoSend;
+import com.example.productoslinea.data.Dtos.ClienteDto;
 import com.example.productoslinea.data.Service.ClienteService;
 import com.example.productoslinea.data.entities.Cliente;
 import com.example.productoslinea.data.repositories.ClienteRepository;
@@ -35,12 +35,12 @@ public class ClienteControllerTest {
 
     @Test
     public void testGetAllClientes() {
-        ResponseEntity<List<ClienteDtoSend>> response = restTemplate.exchange("/clientes", HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<ClienteDtoSend>>() {});
+        ResponseEntity<List<ClienteDto>> response = restTemplate.exchange("/clientes", HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<ClienteDto>>() {});
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
 
-        List<ClienteDtoSend> clientes = clienteService.findAll();
+        List<ClienteDto> clientes = clienteService.findAll();
         assertTrue(clientes.size() > 0);
 
         List<Cliente> clientesFromRepository = clienteRepository.findAll();
@@ -56,11 +56,11 @@ public class ClienteControllerTest {
 
         clienteRepository.save(cliente);
 
-        ResponseEntity<ClienteDtoSend> response = restTemplate.getForEntity("/clientes/{id}", ClienteDtoSend.class, cliente.getId());
+        ResponseEntity<ClienteDto> response = restTemplate.getForEntity("/clientes/{id}", ClienteDto.class, cliente.getId());
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
 
-        ClienteDtoSend clienteDto = clienteService.findById(cliente.getId());
+        ClienteDto clienteDto = clienteService.findById(cliente.getId());
         assertEquals(cliente.getNombre(), clienteDto.getNombre());
         assertEquals(cliente.getDireccion(), clienteDto.getDireccion());
         assertEquals(cliente.getEmail(), clienteDto.getEmail());

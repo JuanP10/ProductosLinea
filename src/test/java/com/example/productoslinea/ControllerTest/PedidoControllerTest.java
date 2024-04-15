@@ -1,6 +1,6 @@
 package com.example.productoslinea.ControllerTest;
 
-import com.example.productoslinea.data.Dtos.Send.PedidoDtoSend;
+import com.example.productoslinea.data.Dtos.PedidoDto;
 import com.example.productoslinea.data.Service.PedidoService;
 import com.example.productoslinea.data.entities.Pedido;
 import com.example.productoslinea.data.repositories.PedidoRepository;
@@ -35,12 +35,12 @@ public class PedidoControllerTest {
 
     @Test
     public void testGetAllPedidos() {
-        ResponseEntity<List<PedidoDtoSend>> response = restTemplate.exchange("/pedidos", HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<PedidoDtoSend>>() {});
+        ResponseEntity<List<PedidoDto>> response = restTemplate.exchange("/pedidos", HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<PedidoDto>>() {});
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
 
-        List<PedidoDtoSend> pedidos = pedidoService.findAll();
+        List<PedidoDto> pedidos = pedidoService.findAll();
         assertTrue(pedidos.size() > 0);
 
         List<Pedido> pedidosFromRepository = pedidoRepository.findAll();

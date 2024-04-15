@@ -13,14 +13,18 @@ import lombok.NoArgsConstructor;
 @Data
 
 public class ItemPedido {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(nullable = false)
     private Integer cantidad;
+
+    @Column(name = "precio_unitario", nullable = false)
     private Double precioUnitario;
 
-    @ManyToOne  @JoinColumn(name = "pedido_id")
+    @ManyToOne  @JoinColumn(name = "pedido")
     private Pedido pedido;
 
-    @ManyToOne @JoinColumn(name = "producto_id")
+    @ManyToOne @JoinColumn(name = "producto")
     private Producto producto;
 }

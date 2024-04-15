@@ -1,5 +1,6 @@
 package com.example.productoslinea.data.entities;
 
+import com.example.productoslinea.data.Mappers.ClienteMapper;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,13 +15,17 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class Cliente {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(nullable = false)
     private String nombre;
+    @Column(nullable = false)
     private String email;
+    @Column(nullable = false)
     private String direccion;
 
-    @OneToMany(mappedBy = "cliente")@JsonFormat(pattern = "dd/MM/yyyy")
+    @OneToMany(mappedBy = "cliente")
     List<Pedido> pedidos;
 
 }

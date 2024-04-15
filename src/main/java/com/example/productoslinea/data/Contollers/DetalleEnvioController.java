@@ -1,16 +1,16 @@
 package com.example.productoslinea.data.Contollers;
 
-import com.example.productoslinea.data.Dtos.Send.DetalleEnvioDtoSend;
+import com.example.productoslinea.data.Dtos.DetalleEnvioDto;
 import com.example.productoslinea.data.Service.DetalleEnvioService;
+import com.example.productoslinea.data.entities.DetalleEnvio;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/shipping")
+@RequestMapping("/api/v1/shippingDetails")
 public class DetalleEnvioController {
 
     private final DetalleEnvioService detalleEnvioService;
@@ -20,38 +20,45 @@ public class DetalleEnvioController {
     }
 
     @GetMapping
-    public ResponseEntity<List<DetalleEnvioDtoSend>> findAll() {
+    public ResponseEntity<List<DetalleEnvioDto>> findAll() {
         return ResponseEntity.ok(detalleEnvioService.findAll());
     }
 
     @GetMapping ("/{id}")
-    public ResponseEntity<DetalleEnvioDtoSend> findById(Long id) {
-        return ResponseEntity.ok(detalleEnvioService.findById(id));
+    public ResponseEntity<DetalleEnvioDto> findById(@PathVariable Long id) {
+        DetalleEnvioDto detalleEnvioDto = detalleEnvioService.findById(id);
+        return new ResponseEntity<>(detalleEnvioDto, HttpStatus.OK);
     }
 
-    @GetMapping ("/pedido/{pedidoId}")
-    public ResponseEntity<List<DetalleEnvioDtoSend>> findByPedidoId(Long pedidoId) {
-        return ResponseEntity.ok(detalleEnvioService.findByPedidoId(pedidoId));
+    @GetMapping ("/order/{id}")
+    public ResponseEntity<List<DetalleEnvioDto>> findByPedidoId(@PathVariable Long id) {
+        return ResponseEntity.ok(detalleEnvioService.findByPedidoId(id));
     }
 
-    @GetMapping ("/transportadora/{transportadora}")
-    public ResponseEntity<List<DetalleEnvioDtoSend>> findByTransportadora (String transportadora) {
-        return ResponseEntity.ok(detalleEnvioService.findByTransportadora(transportadora));
+    @GetMapping ("/shippingCompany/{name}")
+    public ResponseEntity<List<DetalleEnvioDto>> findByTransportadora (@PathVariable String name) {
+        return ResponseEntity.ok(detalleEnvioService.findByTransportadora(name));
     }
 
-    @GetMapping ("/estado/{estado}")
-    public ResponseEntity<List<DetalleEnvioDtoSend>> findByPedidoEstado(String estado) {
-        return ResponseEntity.ok(detalleEnvioService.findByPedidoEstado(estado));
+    @GetMapping ("/order/status/{status}")
+    public ResponseEntity<List<DetalleEnvioDto>> findByPedidoEstado(@PathVariable String status) {
+        return ResponseEntity.ok(detalleEnvioService.findByPedidoEstado(status));
     }
 
-    @GetMapping ("/save")
-    public ResponseEntity<DetalleEnvioDtoSend> save(DetalleEnvioDtoSend detalleEnvioDtoSend) {
-        return ResponseEntity.ok(detalleEnvioService.save(detalleEnvioDtoSend));
+    @PostMapping
+    public ResponseEntity<DetalleEnvioDto> save(@RequestBody DetalleEnvioDto detalleEnvioDto) {
+        return ResponseEntity.ok(detalleEnvioService.save(detalleEnvioDto));
     }
 
-    @GetMapping ("/delete/{id}")
-    public void delete(Long id) {
+    @PutMapping ("/{id}")
+    public ResponseEntity<DetalleEnvioDto> update(@PathVariable Long id, @RequestBody DetalleEnvioDto detalleEnvioDto) {
+        return ResponseEntity.ok(detalleEnvioService.actualizarUpdate(id, detalleEnvioDto));
+    }
+
+    @DeleteMapping ("/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id) {
         detalleEnvioService.delete(id);
+        return ResponseEntity.ok().body("Envio eliminado correctamente");
     }
 
 }

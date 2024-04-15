@@ -1,6 +1,6 @@
 package com.example.productoslinea.data.Service.ServiceImpl;
 
-import com.example.productoslinea.data.Dtos.Send.ItemPedidoDtoSend;
+import com.example.productoslinea.data.Dtos.ItemPedidoDto;
 import com.example.productoslinea.data.Mappers.ItemPedidoMapper;
 import com.example.productoslinea.data.Service.ItemPedidoService;
 import com.example.productoslinea.data.entities.ItemPedido;
@@ -21,42 +21,56 @@ public class ItemPedidoServiceImp implements ItemPedidoService {
     }
 
     @Override
-    public List<ItemPedidoDtoSend> findAll() {
+    public List<ItemPedidoDto> findAll() {
         List<ItemPedido> itemPedidos = itemPedidoRepository.findAll();
-        return itemPedidos.stream().map(itemPedidoMapper::itemPedidoToItemPedidoDtoSend).toList();
+        return itemPedidos.stream().map(itemPedidoMapper::itemPedidoToItemPedidoDto).toList();
     }
 
     @Override
-    public ItemPedidoDtoSend findById(Long id) {
-        ItemPedido itemPedido = itemPedidoRepository.findById(id).orElseThrow(() -> new RuntimeException("ItemPedido not found con el ID: "+id));
-        return itemPedidoMapper.itemPedidoToItemPedidoDtoSend(itemPedido);
+    public ItemPedidoDto findById(Long id) {
+        ItemPedido itemPedido = itemPedidoRepository.findById(id).orElseThrow(() -> new RuntimeException("ItemPedido no encontrado con el ID: "+id));
+        return itemPedidoMapper.itemPedidoToItemPedidoDto(itemPedido);
     }
 
     @Override
-    public ItemPedidoDtoSend save(ItemPedidoDtoSend itemPedidoDtoSend) {
-        ItemPedido itemPedido = itemPedidoMapper.itemPedidoDtoSendToItemPedido(itemPedidoDtoSend);
-        return itemPedidoMapper.itemPedidoToItemPedidoDtoSend(itemPedidoRepository.save(itemPedido));
+    public ItemPedidoDto save(ItemPedidoDto itemPedidoDto) {
+        ItemPedido itemPedido = itemPedidoMapper.itemPedidoDtoToItemPedido(itemPedidoDto);
+        return itemPedidoMapper.itemPedidoToItemPedidoDto(itemPedidoRepository.save(itemPedido));
     }
 
     @Override
-    public List<ItemPedidoDtoSend> findByPedidoId(Long id) {
-        List<ItemPedido> itemPedidos = itemPedidoRepository.findByPedidoId(id);
-        return itemPedidos.stream().map(itemPedidoMapper::itemPedidoToItemPedidoDtoSend).toList();
+    public ItemPedidoDto guardarItemPedido(Long id, ItemPedidoDto itemPedidoDto) {
+        ItemPedido itemPedido = itemPedidoMapper.itemPedidoDtoToItemPedido(itemPedidoDto);
+        ItemPedido itemPedidoGuardado = itemPedidoRepository.findById(id).map(itemPedidoEncontrado -> {
+            itemPedidoEncontrado.setCantidad(itemPedido.getCantidad());
+            itemPedidoEncontrado.setProducto(itemPedido.getProducto());
+            itemPedidoEncontrado.setPedido(itemPedido.getPedido());
+            return itemPedidoRepository.save(itemPedidoEncontrado);
+        }).orElseThrow(() -> new RuntimeException("ItemPedido no encontrado con el ID: "+id));
+
+        return itemPedidoMapper.itemPedidoToItemPedidoDto(itemPedidoGuardado);
     }
 
     @Override
-    public List<ItemPedidoDtoSend> findByProductoId(Long id) {
-        List<ItemPedido> itemPedidos = itemPedidoRepository.findByProductoId(id);
-        return itemPedidos.stream().map(itemPedidoMapper::itemPedidoToItemPedidoDtoSend).toList();
+    public List<ItemPedidoDto> findByPedidoId(Long idPedido) {
+        List<ItemPedido> itemPedidos = itemPedidoRepository.findByPedidoId(idPedido);
+        return itemPedidos.stream().map(itemPedidoMapper::itemPedidoToItemPedidoDto).toList();
     }
 
     @Override
-    public Double calcularTotalVentasPorProducto(Long id) {
-        return itemPedidoRepository.calcularTotalVentasPorProducto(id);
+    public List<ItemPedidoDto> findByProductoId(Long idProducto) {
+        List<ItemPedido> itemPedidos = itemPedidoRepository.findByProductoId(idProducto);
+        return itemPedidos.stream().map(itemPedidoMapper::itemPedidoToItemPedidoDto).toList();
+    }
+
+    @Override
+    public Double calcularTotalVentasPorProducto(Long idProducto) {
+        return itemPedidoRepository.calcularTotalVentasPorProducto(idProducto);
     }
 
     @Override
     public void delete(Long id) {
+        itemPedidoRepository.findById(id).orElseThrow(() -> new RuntimeException("ItemPedido no encontrado con el ID: "+id));
         itemPedidoRepository.deleteById(id);
     }
 }

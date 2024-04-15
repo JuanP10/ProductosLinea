@@ -1,20 +1,22 @@
 package com.example.productoslinea.data.Service;
 
-import com.example.productoslinea.data.Dtos.Send.PedidoDtoSend;
+import com.example.productoslinea.data.Dtos.PedidoDto;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public interface PedidoService {
 
-    List<PedidoDtoSend> findByFechaPedidoBetween(LocalDate fechaInicio, LocalDate fechaFin); //
+    List<PedidoDto> findByFechaPedidoBetween(LocalDate fechaInicio, LocalDate fechaFin); //
 
-    List<PedidoDtoSend> findByClienteAndEstado (Long clienteId, String estado); //
+    List<PedidoDto> findByClienteAndEstado (Long clienteId, String estado); //
 
-    List<PedidoDtoSend> recuperarPedidosConArticulosPorCliente (Long clienteId); //
-    List<PedidoDtoSend> findAll(); //
-    PedidoDtoSend findById(Long id); //
-    PedidoDtoSend guardarPedido (PedidoDtoSend pedidoDtoSend); //
+    List<PedidoDto> recuperarPedidosConArticulosPorCliente (Long cliente); //
+    List<PedidoDto> findAll(); //
+    PedidoDto findById(Long id); //
+    PedidoDto guardarPedido (PedidoDto pedidoDto); //
+
+    PedidoDto actualizarPedido (Long id, PedidoDto pedidoDto); //
     void deletePedido(Long id); //
 
 }

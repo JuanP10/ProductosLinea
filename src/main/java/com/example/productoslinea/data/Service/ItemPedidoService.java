@@ -1,19 +1,21 @@
 package com.example.productoslinea.data.Service;
 
-import com.example.productoslinea.data.Dtos.Send.ItemPedidoDtoSend;
+import com.example.productoslinea.data.Dtos.ItemPedidoDto;
 
 import java.util.List;
 
 public interface ItemPedidoService {
 
-    List<ItemPedidoDtoSend> findAll();
-    ItemPedidoDtoSend findById(Long id);
-    ItemPedidoDtoSend save(ItemPedidoDtoSend itemPedidoDtoSend);
+    List<ItemPedidoDto> findAll();
+    ItemPedidoDto findById(Long id);
+    ItemPedidoDto save(ItemPedidoDto itemPedidoDto);
 
-    List<ItemPedidoDtoSend> findByPedidoId(Long id);
-    List<ItemPedidoDtoSend> findByProductoId(Long id);
+    ItemPedidoDto guardarItemPedido (Long id, ItemPedidoDto itemPedidoDto);
 
-    Double calcularTotalVentasPorProducto(Long id);
+    List<ItemPedidoDto> findByPedidoId(Long idPedido);
+    List<ItemPedidoDto> findByProductoId(Long idProducto);
+
+    Double calcularTotalVentasPorProducto(Long idProducto);
     void delete(Long id);
 
 }

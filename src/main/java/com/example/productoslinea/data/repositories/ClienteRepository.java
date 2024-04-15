@@ -13,6 +13,6 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     List<Cliente> findByDireccion (String direccion);
 
     //Encontrar clientes por todos los clientes que comiencen por un nombre
-    List<Cliente> findByNombreStartingWith(String nombre);  //
+    List<Cliente> findByNombreStartingWith (String nombre);  //
 
 }

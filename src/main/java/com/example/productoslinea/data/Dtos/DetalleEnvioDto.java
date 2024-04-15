@@ -1,5 +1,4 @@
-package com.example.productoslinea.data.Dtos.Save;
-
+package com.example.productoslinea.data.Dtos;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,8 +6,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DetalleEnvioDtoSave {
+public class DetalleEnvioDto {
+    private Long id;
     private String direccion;
     private String transportadora;
-    private int numeroGuia;
+    private Integer numeroGuia;
+    private ClienteDto cliente;
 }

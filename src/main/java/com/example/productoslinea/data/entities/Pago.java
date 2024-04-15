@@ -15,14 +15,21 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Data
 public class Pago {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private double totalPago;
+
+    @Column(name = "total_pago", nullable = false)
+    private Double totalPago;
+
     @JsonFormat(pattern = "dd/MM/yyyy")
+    @Column(name = "fecha_pago", nullable = false)
     private LocalDate fechaPago;
+
+    @Column(name = "metodo_pago", nullable = false)
+    @Enumerated(EnumType.STRING)
     private MetodoPago metodoPago;
 
-    @OneToOne @JoinColumn(name = "pedido_id")
+    @OneToOne @JoinColumn(name = "pedido")
     private Pedido pedido;
 
 

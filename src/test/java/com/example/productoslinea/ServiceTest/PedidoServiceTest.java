@@ -1,6 +1,6 @@
 package com.example.productoslinea.ServiceTest;
 
-import com.example.productoslinea.data.Dtos.Send.PedidoDtoSend;
+import com.example.productoslinea.data.Dtos.PedidoDto;
 import com.example.productoslinea.data.Mappers.PedidoMapper;
 import com.example.productoslinea.data.Service.ServiceImpl.PedidoServiceImp;
 import com.example.productoslinea.data.entities.Enums.Estado;
@@ -51,12 +51,12 @@ public class PedidoServiceTest {
         given(pedidoRepository.findById(idPedido))
                 .willReturn(Optional.of(pedido));
 
-        PedidoDtoSend pedidoDto = new PedidoDtoSend();
+        PedidoDto pedidoDto = new PedidoDto();
 
-        given(pedidoMapper.pedidoToPedidoDtoSend(any(Pedido.class)))
+        given(pedidoMapper.pedidoToPedidoDto(any(Pedido.class)))
                 .willReturn(pedidoDto);
 
-        PedidoDtoSend result = pedidoService.findById(idPedido);
+        PedidoDto result = pedidoService.findById(idPedido);
 
         assertNotNull(result);
     }

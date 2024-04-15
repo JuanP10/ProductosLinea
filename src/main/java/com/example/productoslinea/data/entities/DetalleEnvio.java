@@ -11,13 +11,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class DetalleEnvio {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String direccion;
-    private String transportadora;
-    private int numeroGuia;
 
-    @OneToOne @JoinColumn(name = "pedido_id")
+    @Column(nullable = false)
+    private String direccion;
+
+    @Column(nullable = false)
+    private String transportadora;
+
+    @Column(name = "numero_guia", nullable = false)
+    private Integer numeroGuia;
+
+    @OneToOne @JoinColumn(name = "pedido")
     private Pedido pedido;
 
 }

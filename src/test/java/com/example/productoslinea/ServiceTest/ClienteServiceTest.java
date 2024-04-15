@@ -1,6 +1,6 @@
 package com.example.productoslinea.ServiceTest;
 
-import com.example.productoslinea.data.Dtos.Send.ClienteDtoSend;
+import com.example.productoslinea.data.Dtos.ClienteDto;
 import com.example.productoslinea.data.Mappers.ClienteMapper;
 import com.example.productoslinea.data.Service.ServiceImpl.ClienteServiceImp;
 import com.example.productoslinea.data.entities.Cliente;
@@ -53,12 +53,12 @@ public class ClienteServiceTest {
         given(clientRepository.findById(idProduct))
                 .willReturn(Optional.of(cliente));
 
-        ClienteDtoSend productDto = new ClienteDtoSend();
+        ClienteDto productDto = new ClienteDto();
 
-        given(clientMapper.clienteToClienteDtoSend(any(Cliente.class)))
+        given(clientMapper.clienteToClienteDto(any(Cliente.class)))
                 .willReturn(productDto);
 
-        ClienteDtoSend result = clientService.findById(idProduct);
+        ClienteDto result = clientService.findById(idProduct);
 
         assertNotNull(result);
     }
@@ -75,7 +75,7 @@ public class ClienteServiceTest {
 
     @Test
     void UpdateCliente() {
-        ClienteDtoSend clientDto = new ClienteDtoSend();
+        ClienteDto clientDto = new ClienteDto();
         clientDto.setNombre("Juanito");
         clientDto.setEmail("juanito@gmail.com");
         clientDto.setDireccion("sdadf");

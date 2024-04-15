@@ -1,4 +1,4 @@
-package com.example.productoslinea.data.Dtos.Send;
+package com.example.productoslinea.data.Dtos;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class ItemPedidoDtoSend {
+public class ItemPedidoDto {
     private Long id;
     private Integer cantidad;
     private Double precioUnitario;
-    private PedidoDtoSend pedido;
-    private ProductoDtoSend producto;
+    private PedidoDto pedido;
+    private ProductoDto producto;
 
 }

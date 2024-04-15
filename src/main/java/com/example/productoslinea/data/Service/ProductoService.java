@@ -1,19 +1,20 @@
 package com.example.productoslinea.data.Service;
 
-import com.example.productoslinea.data.Dtos.Send.ProductoDtoSend;
+import com.example.productoslinea.data.Dtos.ProductoDto;
 
 import java.util.List;
 
 public interface ProductoService {
 
-    List<ProductoDtoSend> findByName (String name);
-    List<ProductoDtoSend> findByStock ();
-    List<ProductoDtoSend> findByPriceAndStock (double price, int stock);
+    List<ProductoDto> findByName (String name);
+    List<ProductoDto> findByStock ();
+    List<ProductoDto> findByPriceAndStock (Double precio, Integer stock);
 
-    List<ProductoDtoSend> findAll(); //
-    ProductoDtoSend findById(Long id); //
+    List<ProductoDto> findAll(); //
+    ProductoDto findById(Long id); //
 
-    ProductoDtoSend guardarProducto (ProductoDtoSend productoDtoSend); //
+    ProductoDto guardarProducto (ProductoDto productoDto); //
+    ProductoDto actualizarProducto (Long id, ProductoDto productoDto); //
 
     void deleteProducto(Long id); //
 }

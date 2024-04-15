@@ -1,15 +1,14 @@
 package com.example.productoslinea.data.Contollers;
 
-import com.example.productoslinea.data.Dtos.Send.ItemPedidoDtoSend;
+import com.example.productoslinea.data.Dtos.ItemPedidoDto;
 import com.example.productoslinea.data.Service.ItemPedidoService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api/v1/order-items")
+@RequestMapping("/api/v1/orderItems")
 public class ItemPedidoController {
 
     private final ItemPedidoService itemPedidoService;
@@ -23,36 +22,43 @@ public class ItemPedidoController {
         return ResponseEntity.ok(itemPedidoService.findAll());
     }
 
-    @GetMapping("/order/{orderId}")
-    public ResponseEntity<?> getOrderItemsByOrderId(Long orderId) {
-        return ResponseEntity.ok(itemPedidoService.findByPedidoId(orderId));
+    @GetMapping("/order/{id}")
+    public ResponseEntity<?> getOrderItemsByOrderId(@PathVariable Long id) {
+        return ResponseEntity.ok(itemPedidoService.findByPedidoId(id));
     }
 
-    @GetMapping("/product/{productId}")
-    public ResponseEntity<?> getOrderItemsByProductId(Long productId) {
-        return ResponseEntity.ok(itemPedidoService.findByProductoId(productId));
+    @GetMapping("/product/{id}")
+    public ResponseEntity<?> getOrderItemsByProductId(@PathVariable Long id) {
+        return ResponseEntity.ok(itemPedidoService.findByProductoId(id));
     }
 
-    @GetMapping("/product/{productId}/total-sales")
-    public ResponseEntity<?> getTotalSalesByProductId(Long productId) {
-        return ResponseEntity.ok(itemPedidoService.calcularTotalVentasPorProducto(productId));
+    @GetMapping("/product/sales/{id}")
+    public ResponseEntity<?> getTotalSalesByProductId(@PathVariable Long id) {
+        return ResponseEntity.ok(itemPedidoService.calcularTotalVentasPorProducto(id));
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<?> getOrderItemById(Long id) {
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateOrderItem(@PathVariable Long id, @RequestBody ItemPedidoDto itemPedidoDto) {
+        return ResponseEntity.ok(itemPedidoService.guardarItemPedido(id, itemPedidoDto));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getOrderItemById(@PathVariable Long id) {
         return ResponseEntity.ok(itemPedidoService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<?> guardarItemPedido (ItemPedidoDtoSend itemPedidoDtoSend) {
-        ItemPedidoDtoSend itemPedido = itemPedidoService.save(itemPedidoDtoSend);
+    public ResponseEntity<ItemPedidoDto> guardarItemPedido (@RequestBody ItemPedidoDto itemPedidoDto) {
+        ItemPedidoDto itemPedido = itemPedidoService.save(itemPedidoDto);
         return new ResponseEntity<>(itemPedido, HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity<?> deleteOrderItem(Long id) {
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteOrderItem(@PathVariable Long id) {
         itemPedidoService.delete(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body("ItemPedido eliminado");
     }
 
 
