@@ -1,4 +1,4 @@
-Primera Parte del MicroServicio de Tienda Online... contiene las siguientes entidades:
+Primera Parte de la Tienda Online... contiene las siguientes entidades:
 - Cliente
 - Detalle Envio
 - Items Pedido
